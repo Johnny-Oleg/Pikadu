@@ -9,7 +9,7 @@ const firebaseConfig = {
   appId: "1:166714013150:web:7ae313ac6377b8d268194f"
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig); console.log(firebase);
 
 const IS_VALID_EMAIL = /^\w+@\w+\.\w{2,}$/;
 
@@ -32,43 +32,50 @@ const $posts = document.querySelector('.posts');
 const $newPost = document.querySelector('.button-new-post');
 const $addPost = document.querySelector('.add-post');
 
-const listUsers = [
-  {
-    id: '01',
-    email: 'fssdf@q.ru',
-    password: '12345',
-    displayName: 'Tolsty Kotik',
-    photo: '../img/kot.jpg',
-  },
-  {
-    id: '02',
-    email: 'ccvbn@q.com',
-    password: '12133345',
-    displayName: 'lolWhut',
-    photo: '../img/kot.jpg',
-  },
-];
+const DEFAULT_PHOTO = $avatar.src;
 
 const setUsers = {
   user: null,
+
+  initUser(handler) {
+    firebase.auth().onAuthStateChanged(user => {
+      user ? this.user = user : this.user = null;
+      handler && handler();
+    });
+  },
   
   logIn(email, password, handler) {
     if (!IS_VALID_EMAIL.test(email)) return;
 
-    const _user = this.getUser(email);
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .catch(err => {
+        const errCode = err.code;
+        const errMessage = err.message;
 
-    if (_user && _user.password === password) {
-      this.authorizedUser(_user);
-      handler && handler();
-    } else {
-      alert('Пользователь с такими данными не найден!');
-    }
+        if (errCode === 'auth/wrong-password') {
+          alert('Неверный пароль');
+        } else if (errCode === 'auth/user-not-found') {
+          alert('Пользователь с такими данными не найден!');
+        } else {
+          alert(errMessage);
+        }
+
+        console.log(err);
+      });
+
+    // const _user = this.getUser(email);
+
+    // if (_user && _user.password === password) {
+    //   this.authorizedUser(_user);
+    //   handler && handler();
+    // } else {
+    //   alert('Пользователь с такими данными не найден!');
+    // }
   },
 
-  logOut(handler) {
-    this.user = null;
-
-    handler && handler();
+  logOut() {
+    firebase.auth().signOut();
+    //handler && handler();
   },
 
   signUp(email, password, handler) {
@@ -80,63 +87,108 @@ const setUsers = {
       return;
     }
 
-    if (!this.getUser(email)) {
-      const _user = {
-        email, 
-        password, 
-        displayName: email.substring(0, email.indexOf('@')),
-      };
+    firebase.auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(data => {
+        this.editUser(email.substring(0, email.indexOf('@')), null, handler);
+      })
+      .catch(err => {
+        const errCode = err.code;
+        const errMessage = err.message;
 
-      listUsers.push(_user);
+        if (errCode === 'auth/weak-password') {
+          alert('Слабый пароль');
+        } else if (errCode === 'auth/email-already-in-use') {
+          alert('Этот email уже используется');
+        } else {
+          alert(errMessage);
+        }
 
-      this.authorizedUser(_user);
-      handler && handler();
-    } else {
-      alert('Пользователь с таким email уже существует!');
-    }
+        console.log(err);
+      });
+    // if (!this.getUser(email)) {
+    //   const _user = {
+    //     email, 
+    //     password, 
+    //     displayName: email.substring(0, email.indexOf('@')),
+    //   };
+
+    //   listUsers.push(_user);
+
+    //   this.authorizedUser(_user);
+    //   handler && handler();
+    // } else {
+    //   alert('Пользователь с таким email уже существует!');
+    // }
   },
 
-  editUser(userName, userPhoto = '', handler) {
-    userName && (this.user.displayName = userName);
-    userPhoto && (this.user.photo = userPhoto);
+  editUser(displayName, photoURL, handler) {
+    const _user = firebase.auth().currentUser;
 
-    handler && handler();
+    if (displayName) {
+      if (photoURL) {
+        _user.updateProfile({displayName, photoURL}).then(handler);
+      } else {
+        _user.updateProfile({displayName}).then(handler);
+      }
+    };
+
+    //handler && handler();
   },
 
-  getUser(email) {return listUsers.find(item => item.email === email)},
-
-  authorizedUser(user) {
-    this.user = user;
+  sendReset(email) {
+    firebase.auth().sendPasswordResetEmail({email})
+      .then(() => alert('Письмо отправлено'))
+      .catch(err => console.log(err));
   }
+
+  // getUser(email) {return listUsers.find(item => item.email === email)},
+
+  // authorizedUser(user) {
+  //   this.user = user;
+  // }
 };
 
+const $loginForgot = document.querySelector('.login-forgot');
+
+$loginForgot.addEventListener('click', e => {
+  e.preventDefault();
+
+  setUsers.sendReset($emailInput.value);
+  $emailInput.value = '';
+})
+
 const setPosts = {
-  allPosts: [
-    {
-      title: 'Заголовок',
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat optio a molestiae rem iusto deserunt architecto non veritatis quibusdam voluptatibus?',
-      tags: ['свежее', 'новое', 'горячее', 'мое', 'случайность'],
-      author: {displayName: 'Tolsty Kotik', photo: '../img/kot.jpg'},
-      date: '11.11.2020, 15:34:00',
-      likes: 75,
-      comments: 28,
-    }
-  ],
+  allPosts: [],
 
   addPost(title, text, tags, handler) {
+    const _user = firebase.auth().currentUser;
+
     this.allPosts.unshift({
-      title, text, 
+      id: `postID${(+new Date()).toString(16)}-${_user.uid}`,
+      title, 
+      text, 
       tags: tags.split(', ').map(item => item.trim()),
       author: {
         displayName: setUsers.user.displayName,
-        photo: setUsers.user.photo,
+        photo: setUsers.user.photoURL,
       },
       date: new Date().toLocaleString(),
       likes: 0,
       comments: 0,
     });
 
-    handler && handler();
+    firebase.database().ref('post').set(this.allPosts)
+      .then(() => this.getPosts(handler));
+    //handler && handler();
+  },
+
+  getPosts(handler) {
+    firebase.database().ref('post').on('value', snapshot => {
+      this.allPosts = snapshot.val() || [];
+
+      handler && handler();
+    });
   }
 };
 
@@ -147,7 +199,7 @@ console.log('user:', user);
     $login.style.display = 'none';
     $user.style.display = '';
     $userName.textContent = user.displayName;
-    $avatar.src = user.photo || $avatar.src;
+    $avatar.src = user.photoURL || DEFAULT_PHOTO;
     $newPost.classList.add('visible');
   } else {
     $login.style.display = '';
@@ -245,7 +297,7 @@ const init = () => {
   $exit.addEventListener('click', e => {
     e.preventDefault();
 
-    setUsers.logOut(toggleAuthDom);
+    setUsers.logOut();
   });
 
   $edit.addEventListener('click', e => {
@@ -279,7 +331,8 @@ const init = () => {
 
   $addPost.addEventListener('submit', e => {
     e.preventDefault();
-
+    console.dir($addPost)
+console.log($addPost.elements[0].value); //TODO
     const { title, text, tags } = $addPost.elements;
 
     if (title.value.length < 6) {
@@ -300,25 +353,8 @@ const init = () => {
     $addPost.reset();
   });
 
-  showAllPosts();
-  toggleAuthDom();
+  setUsers.initUser(toggleAuthDom);
+  setPosts.getPosts(showAllPosts);
 };
 
 document.addEventListener('DOMContentLoaded', init);
-
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
-    var providerData = user.providerData;
-    // ...
-  } else {
-    // User is signed out.
-    // ...
-  }
-});
