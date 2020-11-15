@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <!-- Подключаем стили -->
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
 </head>
 <body>
   <!-- Создаем шапку сайта -->
@@ -45,7 +46,7 @@
 
   <div class="content">
     <main class="posts">
-      <section class="post">
+      <!-- <section class="post">
         <div class="post-body">
           <h2 class="post-title">Заголовлок поста</h2>
           <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
@@ -54,28 +55,10 @@
             снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
             подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
             вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
           <div class="tags">
             <a href="#" class="tag">#свежее</a>
-            <a href="#" class="tag">#новое</a>
-            <a href="#" class="tag">#горячее</a>
-            <a href="#" class="tag">#мое</a>
-            <a href="#" class="tag">#случайность</a>
           </div>
-          <!-- /.tags -->
         </div>
-        <!-- /.post-body -->
         <div class="post-footer">
           <div class="post-buttons">
             <button class="post-button likes">
@@ -101,7 +84,6 @@
               </svg>
             </button>
           </div>
-          <!-- /.post-buttons -->
           <div class="post-author">
             <div class="author-about">
               <a href="#" class="author-username">arteislamov</a>
@@ -109,10 +91,8 @@
             </div>
             <a href="#" class="author-link"><img src="img/avatar.jpeg" alt="avatar" class="author-avatar"></a>
           </div>
-          <!-- /.post-author -->
         </div>
-        <!-- /.post-footer -->
-      </section>
+      </section> -->
       <section class="post">
         <div class="post-body">
           <h2 class="post-title">Заголовлок поста</h2>
@@ -201,16 +181,32 @@
         </form>
       </div>
       <div class="user">
-        <a href="#" class="user-info">
-          <img width="40" height="40" src="img/avatar.jpeg" alt="photo: user" class="user-avatar">
-          <span class="user-name">islamovartem</span>
-        </a>
-        <!-- /.user-info -->
-        <a href="#" class="exit">
-          <svg class="icon icon-exit">
-            <use xlink:href="img/icons.svg#exit"></use>
-          </svg>
-        </a>
+        <div class="user-container">
+          <a href="#" class="user-info">
+            <img width="40" height="40" src="img/avatar.jpeg" alt="photo: user" class="user-avatar">
+            <span class="user-name">islamovartem</span>
+          </a>
+          <!-- /.user-info -->
+          <a class="edit" href="#">
+            <img class="icon icon-edit" src="img/edit-button.svg" alt="edit">
+          </a>
+          <a href="#" class="exit">
+            <svg class="icon icon-exit">
+              <use xlink:href="img/icons.svg#exit"></use>
+            </svg>
+          </a>
+        </div>  
+        <form class="edit-container">
+          <h2 class="edit-title">Редактировать</h2>
+          <label class="edit-label">
+            <input class="edit-input edit-username" type="text" name="username" minlength="3"
+            placeholder="Логин" required>
+          </label>
+          <label class="edit-label">
+            <input class="edit-input edit-photo" type="text" name="photo" placeholder="URL-photo">
+          </label>
+          <button class="edit-button">Сохранить</button>
+        <form/>
         <!-- /.exit -->
       </div>
       <!-- /.user -->
@@ -263,6 +259,5 @@
     <!-- /.sidebar -->
   </div>
   <!-- /.content -->
-  <script src="js/main.js"></script>
 </body>
 </html>
