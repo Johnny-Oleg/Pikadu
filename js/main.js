@@ -1,4 +1,3 @@
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyARlqBmxJxF8XXsqX1zjn4s6lPUNbUuTxY",
   authDomain: "pikadu-pikabu-clone.firebaseapp.com",
@@ -8,8 +7,8 @@ const firebaseConfig = {
   messagingSenderId: "166714013150",
   appId: "1:166714013150:web:7ae313ac6377b8d268194f"
 };
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig); console.log(firebase);
+
+firebase.initializeApp(firebaseConfig);
 
 const IS_VALID_EMAIL = /^\w+@\w+\.\w{2,}$/;
 
@@ -62,20 +61,10 @@ const setUsers = {
 
         console.log(err);
       });
-
-    // const _user = this.getUser(email);
-
-    // if (_user && _user.password === password) {
-    //   this.authorizedUser(_user);
-    //   handler && handler();
-    // } else {
-    //   alert('Пользователь с такими данными не найден!');
-    // }
   },
 
   logOut() {
     firebase.auth().signOut();
-    //handler && handler();
   },
 
   signUp(email, password, handler) {
@@ -106,20 +95,6 @@ const setUsers = {
 
         console.log(err);
       });
-    // if (!this.getUser(email)) {
-    //   const _user = {
-    //     email, 
-    //     password, 
-    //     displayName: email.substring(0, email.indexOf('@')),
-    //   };
-
-    //   listUsers.push(_user);
-
-    //   this.authorizedUser(_user);
-    //   handler && handler();
-    // } else {
-    //   alert('Пользователь с таким email уже существует!');
-    // }
   },
 
   editUser(displayName, photoURL, handler) {
@@ -132,8 +107,6 @@ const setUsers = {
         _user.updateProfile({displayName}).then(handler);
       }
     };
-
-    //handler && handler();
   },
 
   sendReset(email) {
@@ -141,12 +114,6 @@ const setUsers = {
       .then(() => alert('Письмо отправлено'))
       .catch(err => console.log(err));
   }
-
-  // getUser(email) {return listUsers.find(item => item.email === email)},
-
-  // authorizedUser(user) {
-  //   this.user = user;
-  // }
 };
 
 const $loginForgot = document.querySelector('.login-forgot');
@@ -164,7 +131,7 @@ const setPosts = {
   addPost(title, text, tags, handler) {
     const _user = firebase.auth().currentUser;
 
-    this.allPosts.unshift({
+    const _userObject = {
       id: `postID${(+new Date()).toString(16)}-${_user.uid}`,
       title, 
       text, 
@@ -174,13 +141,14 @@ const setPosts = {
         photo: setUsers.user.photoURL,
       },
       date: new Date().toLocaleString(),
-      likes: 0,
-      comments: 0,
-    });
+      likes: Math.floor(Math.random() * 100 + Math.random() * 10),
+      comments: Math.floor(Math.random() * 10),
+    }
+
+    this.allPosts.unshift(_userObject);
 
     firebase.database().ref('post').set(this.allPosts)
       .then(() => this.getPosts(handler));
-    //handler && handler();
   },
 
   getPosts(handler) {
@@ -331,8 +299,7 @@ const init = () => {
 
   $addPost.addEventListener('submit', e => {
     e.preventDefault();
-    console.dir($addPost)
-console.log($addPost.elements[0].value); //TODO
+
     const { title, text, tags } = $addPost.elements;
 
     if (title.value.length < 6) {
