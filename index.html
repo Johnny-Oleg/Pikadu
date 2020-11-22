@@ -3,22 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Выводим заголовок -->
   <title>Pikadu — главная</title>
-  <!-- Подключаем normalize -->
   <link rel="stylesheet" href="css/normalize.css">
-  <!-- Подключаем стили -->
   <link rel="stylesheet" href="css/style.css">
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js" defer></script>
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-      https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-auth.js" defer></script>
   <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-database.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 <body>
-  <!-- Создаем шапку сайта -->
   <header class="header">
     <div class="header-wrapper">
       <a href="/" class="header-logo">
@@ -31,103 +24,23 @@
           <li class="header-menu-item"><a href="#" class="header-menu-link">Горячее</a></li>
           <li class="header-menu-item"><a href="#" class="header-menu-link">Подписки</a></li>
         </ul>
-        
       </nav>
-      <!-- /.header-nav -->
       <div class="input-group search">
         <input type="search" class="search-input" placeholder="Поиск по сайту">
         <button class="search-button">
           <img src="img/search.svg" alt="icon: search" class="search-icon">
         </button>
       </div>
-      <!-- /.input-group -->
       <a href="#" class="menu-toggle" id="menu-toggle">
         <span></span>
         <span></span>
         <span></span>
       </a>
     </div>
-    <!-- /.header-wrapper -->
   </header>
 
   <div class="content">
-    <main class="posts">
-      <section class="post">
-        <div class="post-body">
-          <h2 class="post-title">Заголовлок поста</h2>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что
-            рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись
-            ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что
-            рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись
-            ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <p class="post-text">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Языком что
-            рот
-            маленький реторический вершину текстов обеспечивает гор свой назад решила сбить маленькая дорогу жизни рукопись
-            ему
-            букв деревни предложения, ручеек залетают продолжил парадигматическая? Но языком сих пустился, запятой своего его
-            снова решила меня вопроса моей своих пояс коварный, власти диких правилами напоивший они текстов ipsum первую
-            подпоясал? Лучше, щеке подпоясал приставка большого курсивных на берегу своего? Злых, составитель агентство что
-            вопроса ведущими о решила одна алфавит! </p>
-          <div class="tags">
-            <a href="#" class="tag">#свежее</a>
-            <a href="#" class="tag">#новое</a>
-            <a href="#" class="tag">#горячее</a>
-            <a href="#" class="tag">#мое</a>
-            <a href="#" class="tag">#случайность</a>
-          </div>
-          <!-- /.tags -->
-        </div>
-        <!-- /.post-body -->
-        <div class="post-footer">
-          <div class="post-buttons">
-            <button class="post-button likes">
-              <svg width="19" height="20" class="icon icon-like">
-                <use xlink:href="img/icons.svg#like"></use>
-              </svg>
-              <span class="likes-counter">26</span>
-            </button>
-            <button class="post-button comments">
-              <svg width="21" height="21" class="icon icon-comment">
-                <use xlink:href="img/icons.svg#comment"></use>
-              </svg>
-              <span class="comments-counter">157</span>
-            </button>
-            <button class="post-button save">
-              <svg width="19" height="19" class="icon icon-save">
-                <use xlink:href="img/icons.svg#save"></use>
-              </svg>
-            </button>
-            <button class="post-button share">
-              <svg width="17" height="19" class="icon icon-share">
-                <use xlink:href="img/icons.svg#share"></use>
-              </svg>
-            </button>
-          </div>
-          <!-- /.post-buttons -->
-          <div class="post-author">
-            <div class="author-about">
-              <a href="#" class="author-username">arteislamov</a>
-              <span class="post-time">5 минут назад</span>
-            </div>
-            <a href="#" class="author-link"><img src="img/avatar.jpeg" alt="avatar" class="author-avatar"></a>
-          </div>
-          <!-- /.post-author -->
-        </div>
-        <!-- /.post-footer -->
-      </section>
-    </main>
-    <!-- /.posts -->
+    <main class="posts"></main>
     <form action="#" class="add-post">
       <input type="text" name="title" class="add-title" placeholder="Заголовок поста">
       <textarea name="text" id="text" class="add-text" placeholder="Текст вашего поста"></textarea>
@@ -141,7 +54,6 @@
         </button>
       </div>
     </form>
-    <!-- /.posts -->
     <aside class="sidebar">
       <div class="login">
         <form class="login-form">
@@ -157,9 +69,8 @@
         <div class="user-container">
           <a href="#" class="user-info">
             <img width="40" height="40" src="img/avatar.jpeg" alt="photo: user" class="user-avatar">
-            <span class="user-name">islamovartem</span>
+            <span class="user-name">user name</span>
           </a>
-          <!-- /.user-info -->
           <a class="edit" href="#">
             <img class="icon icon-edit" src="img/edit-button.svg" alt="edit">
           </a>
@@ -180,9 +91,7 @@
           </label>
           <button class="edit-button">Сохранить</button>
         <form/>
-        <!-- /.exit -->
       </div>
-      <!-- /.user -->
       <nav class="sidebar-nav">
         <ul class="sidebar-menu">
           <li class="sidebar-menu-item">
@@ -218,19 +127,14 @@
         <div class="card-header">
           <h2 class="card-title">Комментарий дня</h2>
         </div>
-        <!-- /.card-header -->
         <div class="card-body">
           <a href="#" class="card-body-title">Как обмануть банкомат, если вы хотите снять больше наличных</a>
           <p class="card-text">Таким образом укрепление и развитие структуры требуют от нас анализа форм развития. Не следует, однако забывать, что реализация намеченных плановых заданий требуют от нас анализа позиций, занимаемых участниками в отношении поставленных
           задач. Задача организации, в особенности же консультация...</p>
         </div>
-        <!-- /.card-body -->
       </div>
-      <!-- /.card -->
       <a href="#" class="ad"></a>
     </aside>
-    <!-- /.sidebar -->
   </div>
-  <!-- /.content -->
 </body>
 </html>

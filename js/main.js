@@ -30,6 +30,7 @@ const $avatar = document.querySelector('.user-avatar');
 const $posts = document.querySelector('.posts');
 const $newPost = document.querySelector('.button-new-post');
 const $addPost = document.querySelector('.add-post');
+const $loginForgot = document.querySelector('.login-forgot');
 
 const DEFAULT_PHOTO = $avatar.src;
 
@@ -39,6 +40,7 @@ const setUsers = {
   initUser(handler) {
     firebase.auth().onAuthStateChanged(user => {
       user ? this.user = user : this.user = null;
+
       handler && handler();
     });
   },
@@ -58,8 +60,6 @@ const setUsers = {
         } else {
           alert(errMessage);
         }
-
-        console.log(err);
       });
   },
 
@@ -92,8 +92,6 @@ const setUsers = {
         } else {
           alert(errMessage);
         }
-
-        console.log(err);
       });
   },
 
@@ -101,29 +99,18 @@ const setUsers = {
     const _user = firebase.auth().currentUser;
 
     if (displayName) {
-      if (photoURL) {
-        _user.updateProfile({displayName, photoURL}).then(handler);
-      } else {
+      photoURL ?
+        _user.updateProfile({displayName, photoURL}).then(handler) :
         _user.updateProfile({displayName}).then(handler);
-      }
     };
   },
 
   sendReset(email) {
-    firebase.auth().sendPasswordResetEmail({email})
-      .then(() => alert('Письмо отправлено'))
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(() => alert('Письмо отправлено на Ваш email'))
       .catch(err => console.log(err));
   }
 };
-
-const $loginForgot = document.querySelector('.login-forgot');
-
-$loginForgot.addEventListener('click', e => {
-  e.preventDefault();
-
-  setUsers.sendReset($emailInput.value);
-  $emailInput.value = '';
-})
 
 const setPosts = {
   allPosts: [],
@@ -162,7 +149,7 @@ const setPosts = {
 
 const toggleAuthDom = () => {
   const user = setUsers.user;
-console.log('user:', user);
+
   if (user) {
     $login.style.display = 'none';
     $user.style.display = '';
@@ -190,7 +177,7 @@ const showAllPosts = () => {
   let postsHTML = '';
 
   setPosts.allPosts.forEach(post => {
-    console.log(post);const { title, text, tags, author, date, likes, comments } = post;
+    const { title, text, tags, author, date, likes, comments } = post;
     
     postsHTML += `
       <section class="post">
@@ -318,6 +305,13 @@ const init = () => {
 
     $addPost.classList.remove('visible');
     $addPost.reset();
+  });
+
+  $loginForgot.addEventListener('click', e => {
+    e.preventDefault();
+
+    setUsers.sendReset($emailInput.value);
+    $emailInput.value = '';
   });
 
   setUsers.initUser(toggleAuthDom);
